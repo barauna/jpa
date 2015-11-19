@@ -3,7 +3,7 @@
   version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
   <persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
   	<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-  	<class>Teste</class>
+  	<class>Item</class>
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
       <property name="javax.persistence.jdbc.url"    value="jdbc:h2:~/test" />

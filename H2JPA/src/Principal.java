@@ -10,9 +10,16 @@ import javax.persistence.Persistence;
 
 public class Principal {
 
+	private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("test");
+	private static EntityManager em = emf.createEntityManager();
+ 
 	public static void main(String[] args) throws Exception {
 		int max = getMaxId();
-		getJPA(max);
+		save(new Item(max+1, "Barah"));
+		find(1);
+		find(4);
+		em.close();
+		emf.close();
 	}
 
 	private static int getMaxId() throws ClassNotFoundException, SQLException {
@@ -30,17 +37,16 @@ public class Principal {
 		return max;
 	}
 	
-	public static void getJPA(int max){
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("test");
-		EntityManager em = emf.createEntityManager();
+	public static void save(Item item){
 		em.getTransaction().begin();
-		Teste t = new Teste();
-		t.setId(max+1);
-		t.setName("Leoanrdo"+(max+1));
-		em.persist(t);
+		em.persist(item);
 		em.getTransaction().commit();
-		em.close();
-		emf.close();
+	}
+	
+	public static void find(int id){
+		Item item = em.find(Item.class, id);
+		System.out.println("...item encontrado...");
+		System.out.println(item);
 	}
 
 }

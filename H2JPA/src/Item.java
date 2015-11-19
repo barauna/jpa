@@ -4,12 +4,19 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="TEST")
-public class Teste {
+public class Item {
 
 	@Id
 	private int id;
 	private String name;
 
+	public Item(){}
+	
+	public Item(int id, String name){
+		this.id = id;
+		this.name = name;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -24,5 +31,11 @@ public class Teste {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Override
+	public String toString(){
+		return this.id + ":" + this.name;
+		
 	}
 }
