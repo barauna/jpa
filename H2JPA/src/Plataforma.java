@@ -1,18 +1,16 @@
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name="TEST")
-public class Item {
+public class Plataforma {
 
 	@Id
 	private int id;
 	private String name;
 
-	public Item(){}
+	public Plataforma(){}
 	
-	public Item(int id, String name){
+	public Plataforma(int id, String name){
 		this.id = id;
 		this.name = name;
 	}

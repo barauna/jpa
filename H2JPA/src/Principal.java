@@ -1,12 +1,11 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 public class Principal {
 
@@ -14,39 +13,58 @@ public class Principal {
 	private static EntityManager em = emf.createEntityManager();
  
 	public static void main(String[] args) throws Exception {
-		int max = getMaxId();
-		save(new Item(max+1, "Barah"));
-		find(1);
-		find(4);
+		inicializaPlataformas();
+		update(1, "Cidade Vitória");
+		delete(2);
+		listarPlataformas();
 		em.close();
 		emf.close();
 	}
 
-	private static int getMaxId() throws ClassNotFoundException, SQLException {
-		Class.forName("org.h2.Driver");
-		Connection con = DriverManager.getConnection("jdbc:h2:~/test", "sa", "");
-		Statement stmt = con.createStatement();
-		String SQL = "select max(id) as max from test";
-		ResultSet result = stmt.executeQuery(SQL);
-		int max = 0;
-		while(result.next()) {
-			max = result.getInt("max");
-			System.out.println("max:" + max);
+	private static void listarPlataformas() {
+		TypedQuery<Plataforma> query = em.createQuery("SELECT p FROM Plataforma p ORDER BY 1 DESC", Plataforma.class);
+		List<Plataforma> lista = query.getResultList();
+		for (Plataforma plataforma : lista) {
+			System.out.println(plataforma);
 		}
-		con.close();
-		return max;
 	}
-	
-	public static void save(Item item){
+
+	private static void inicializaPlataformas() throws ClassNotFoundException, SQLException {
+		int id = 0;
+		while (id < 10) {
+			save(new Plataforma(++id, "P-" + id));
+		}
+	}
+
+	public static void save(Plataforma item){
 		em.getTransaction().begin();
 		em.persist(item);
 		em.getTransaction().commit();
 	}
 	
-	public static void find(int id){
-		Item item = em.find(Item.class, id);
-		System.out.println("...item encontrado...");
-		System.out.println(item);
+	public static Plataforma find(int id){
+		Plataforma plataforma = em.find(Plataforma.class, id);
+		if (plataforma != null) {
+			System.out.print("plataforma encontrada: ");
+		}
+		System.out.println(plataforma);
+		return plataforma;
+	}
+	
+	public static void update(int id, String novoNome){
+		Plataforma plataforma = find(id);
+		plataforma.setName(novoNome);
+		em.getTransaction().begin();
+		em.getTransaction().commit();
+	}
+	
+	public static void delete(int id){
+		Plataforma plataforma = find(id);
+		if (plataforma != null){
+			em.getTransaction().begin();
+			em.remove(plataforma);
+			em.getTransaction().commit();
+		}
 	}
 
 }
