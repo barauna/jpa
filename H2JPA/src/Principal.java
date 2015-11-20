@@ -58,10 +58,6 @@ public class Principal {
 	
 	public static Plataforma find(int id){
 		Plataforma plataforma = em.find(Plataforma.class, id);
-		if (plataforma != null) {
-			System.out.print("plataforma encontrada: ");
-		}
-		System.out.println(plataforma);
 		return plataforma;
 	}
 	

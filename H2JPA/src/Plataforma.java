@@ -5,6 +5,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PreUpdate;
 
 @Entity
 @NamedQuery(query = "SELECT p FROM Plataforma p", name = "principal")
@@ -52,5 +53,10 @@ public class Plataforma {
 	public String toString(){
 		return this.id + ":" + this.name;
 		
+	}
+	
+	@PreUpdate
+	public void preUpdate(){
+		System.out.println("alterando plataforma: " + this.name);
 	}
 }
