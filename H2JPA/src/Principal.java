@@ -15,6 +15,9 @@ public class Principal {
 		inicializaPlataformas();
 		inicializarPocos();
 		update(1, "Cidade Vitória");
+		Plataforma p = find(1);
+		em.refresh(p);
+		System.out.println(p.pocos.get(0).getName());
 		listarPlataformas();
 		em.close();
 		emf.close();
@@ -24,7 +27,7 @@ public class Principal {
 		int id = 0;
 		em.getTransaction().begin();
 		while(id < 4){
-			Poco p = new Poco(++id, "1-JUB-" + id);
+			Poco p = new Poco("1-JUB-" + (++id));
 			p.setPlataforma(find(1));
 			em.persist(p);
 		}
@@ -63,9 +66,9 @@ public class Principal {
 	}
 	
 	public static void update(int id, String novoNome){
+		em.getTransaction().begin();
 		Plataforma plataforma = find(id);
 		plataforma.setName(novoNome);
-		em.getTransaction().begin();
 		em.getTransaction().commit();
 	}
 	
