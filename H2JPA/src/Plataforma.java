@@ -1,7 +1,9 @@
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 
 @Entity
+@NamedQuery(query = "SELECT p FROM Plataforma p", name = "principal")
 public class Plataforma {
 
 	@Id

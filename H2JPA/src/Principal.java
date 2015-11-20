@@ -4,7 +4,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 public class Principal {
@@ -14,15 +13,27 @@ public class Principal {
  
 	public static void main(String[] args) throws Exception {
 		inicializaPlataformas();
+		inicializarPocos();
 		update(1, "Cidade Vitória");
-		delete(2);
 		listarPlataformas();
 		em.close();
 		emf.close();
 	}
 
+	private static void inicializarPocos() {
+		int id = 0;
+		em.getTransaction().begin();
+		while(id < 4){
+			Poco p = new Poco(++id, "1-JUB-" + id);
+			p.setPlataforma(find(1));
+			em.persist(p);
+		}
+		em.getTransaction().commit();
+		
+	}
+
 	private static void listarPlataformas() {
-		TypedQuery<Plataforma> query = em.createQuery("SELECT p FROM Plataforma p ORDER BY 1 DESC", Plataforma.class);
+		TypedQuery<Plataforma> query = em.createNamedQuery("principal", Plataforma.class);
 		List<Plataforma> lista = query.getResultList();
 		for (Plataforma plataforma : lista) {
 			System.out.println(plataforma);
